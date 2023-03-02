@@ -38,7 +38,7 @@ I'm having bugs with the module, where can i report it?
 
  - You will need the latest **BusyBox**, it is necessary for everything to work correctly.
 
- - The module is supported on **Android 5** and up.
+ - You will need a **3.10+** kernel with kcal support.
 
 # Installation guide 
 
