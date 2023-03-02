@@ -504,7 +504,7 @@ while [[ $# -gt 0 ]]; do
           echo ""
           echo "${R}[!] Invalid option or null output.${N}"
           echo ""
-          exit 0
+          exit 1
         fi
       elif [[ -z "$2" ]]; then
         echo ""
@@ -615,7 +615,11 @@ while [[ $# -gt 0 ]]; do
       exit
       ;;
     -c|--custom)
-      custom_config
+      if [[ "$KCAL_TDIR" == "0" ]]; then
+        custom_config
+      elif [[ "$KCAL_TDIR" == "1" ]]; then
+        alternative_custom_config
+      fi
       exit
       ;;
     -h|--help)
