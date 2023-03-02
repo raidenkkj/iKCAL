@@ -1,0 +1,634 @@
+#!/system/bin/sh
+# shellcheck disable=SC2034
+# shellcheck disable=SC3010
+# shellcheck disable=SC1091
+# shellcheck disable=SC3014
+# shellcheck disable=SC3037
+# shellcheck disable=SC3043
+# shellcheck disable=SC2145
+#
+# iKCAL™ is a simple magisk module with kcal presets.
+# Copyright (C) 2023~2023  Raiden Ishigami <contact.raidenishi69@gmail.com>
+#
+# This program is free software: you can redistribute it and/or modify
+#   it under the terms of the GNU General Public License as published by
+#   the Free Software Foundation, either version 3 of the License, or
+#   any later version.
+#
+# This program is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+#  GNU General Public License for more details.
+
+# Magisk Module ID
+ID="iKCAL"
+
+# Detect root
+_name=$(basename "$0")
+ls /data >/dev/null 2>&1 || { echo "iKCAL needs to run as root!"; echo "type 'su' then '$_name' or su -c '$_name'"; exit 1; }
+
+# Magisk Mod Directory
+[ -d "/sbin/.magisk" ] && MOUNTPATH="/sbin/.magisk/modules" || MOUNTPATH="$(find /dev -mindepth 2 -maxdepth 2 -type d -name ".magisk")/modules"
+MODDIR="$MOUNTPATH/$ID"
+[ ! -d "$MODDIR" ] && { echo "[!] iKCAL missing..."; exit 1; }
+
+# Set path to your busybox if applicable
+#_bb=
+
+# Load mod-util.sh
+. "$MODDIR"/mod-util.sh || exit $?
+
+# Test if input is empty
+if [ $# -eq 0 ]; then
+  help_text
+  exit 1
+fi
+
+# Parse command line arguments
+while [[ $# -gt 0 ]]; do
+  key="$1"
+  case $key in
+    -s|--set)
+      if [[ "$2" == "1" ]]; then
+        preset_name="Vomer BrightBalance"
+        echo ""
+        echo "${Y}[*] Applying ${B}$preset_name ${N}${Y}preset...${N}"
+        sleep 1.5
+        vomer_brightbalance
+        echo ""
+        echo "${G}[*] Done, ${B}$preset_name ${N}${Y}preset applied.${N}"
+        echo ""
+      elif [[ "$2" == "2" ]]; then
+        preset_name="Vomer IPS"
+        echo ""
+        echo "${Y}[*] Applying ${B}$preset_name ${N}${Y}preset...${N}"
+        sleep 1.5
+        vomer_ips
+        echo ""
+        echo "${G}[*] Done, ${B}$preset_name ${N}${Y}preset applied.${N}"
+        echo ""
+      elif [[ "$2" == "3" ]]; then
+        preset_name="Vomer AccuRich"
+        echo ""
+        echo "${Y}[*] Applying ${B}$preset_name ${N}${Y}preset...${N}"
+        sleep 1.5
+        vomer_accurich
+        echo ""
+        echo "${G}[*] Done, ${B}$preset_name ${N}${Y}preset applied.${N}"
+        echo ""
+      elif [[ "$2" == "4" ]]; then
+        preset_name="Vomer DeepRich"
+        echo ""
+        echo "${Y}[*] Applying ${B}$preset_name ${N}${Y}preset...${N}"
+        sleep 1.5
+        vomer_deeprich
+        echo ""
+        echo "${G}[*] Done, ${B}$preset_name ${N}${Y}preset applied.${N}"
+        echo ""
+      elif [[ "$2" == "5" ]]; then
+        preset_name="WrinkleFree"
+        echo ""
+        echo "${Y}[*] Applying ${B}$preset_name ${N}${Y}preset...${N}"
+        sleep 1.5
+        wrinklefree
+        echo ""
+        echo "${G}[*] Done, ${B}$preset_name ${N}${Y}preset applied.${N}"
+        echo ""
+      elif [[ "$2" == "6" ]]; then
+        preset_name="WrinkleFree Cool"
+        echo ""
+        echo "${Y}[*] Applying ${B}$preset_name ${N}${Y}preset...${N}"
+        sleep 1.5
+        wrinklefree_cool
+        echo ""
+        echo "${G}[*] Done, ${B}$preset_name ${N}${Y}preset applied.${N}"
+        echo ""
+      elif [[ "$2" == "7" ]]; then
+        preset_name="Deep Black Colorful"
+        echo ""
+        echo "${Y}[*] Applying ${B}$preset_name ${N}${Y}preset...${N}"
+        sleep 1.5
+        deep_black_colorful
+        echo ""
+        echo "${G}[*] Done, ${B}$preset_name ${N}${Y}preset applied.${N}"
+        echo ""
+      elif [[ "$2" == "8" ]]; then
+        preset_name="Sir Banger"
+        echo ""
+        echo "${Y}[*] Applying ${B}$preset_name ${N}${Y}preset...${N}"
+        sleep 1.5
+        sir_banger
+        echo ""
+        echo "${G}[*] Done, ${B}$preset_name ${N}${Y}preset applied.${N}"
+        echo ""
+      elif [[ "$2" == "9" ]]; then
+        preset_name="Purian"
+        echo ""
+        echo "${Y}[*] Applying ${B}$preset_name ${N}${Y}preset...${N}"
+        sleep 1.5
+        purian
+        echo ""
+        echo "${G}[*] Done, ${B}$preset_name ${N}${Y}preset applied.${N}"
+        echo ""
+      elif [[ "$2" == "10" ]]; then
+        preset_name="Franco"
+        echo ""
+        echo "${Y}[*] Applying ${B}$preset_name ${N}${Y}preset...${N}"
+        sleep 1.5
+        franco
+        echo ""
+        echo "${G}[*] Done, ${B}$preset_name ${N}${Y}preset applied.${N}"
+        echo ""
+      elif [[ "$2" == "11" ]]; then
+        preset_name="Harley-Tech"
+        echo ""
+        echo "${Y}[*] Applying ${B}$preset_name ${N}${Y}preset...${N}"
+        sleep 1.5
+        harley_tech
+        echo ""
+        echo "${G}[*] Done, ${B}$preset_name ${N}${Y}preset applied.${N}"
+        echo ""
+      elif [[ "$2" == "12" ]]; then
+        preset_name="Banged Up"
+        echo ""
+        echo "${Y}[*] Applying ${B}$preset_name ${N}${Y}preset...${N}"
+        sleep 1.5
+        banged_up
+        echo ""
+        echo "${G}[*] Done, ${B}$preset_name ${N}${Y}preset applied.${N}"
+        echo ""
+      elif [[ "$2" == "13" ]]; then
+        preset_name="SimCooler"
+        echo ""
+        echo "${Y}[*] Applying ${B}$preset_name ${N}${Y}preset...${N}"
+        sleep 1.5
+        simcooler
+        echo ""
+        echo "${G}[*] Done, ${B}$preset_name ${N}${Y}preset applied.${N}"
+        echo ""
+      elif [[ "$2" == "14" ]]; then
+        preset_name="Obsanity"
+        echo ""
+        echo "${Y}[*] Applying ${B}$preset_name ${N}${Y}preset...${N}"
+        sleep 1.5
+        obsanity
+        echo ""
+        echo "${G}[*] Done, ${B}$preset_name ${N}${Y}preset applied.${N}"
+        echo ""
+      elif [[ "$2" == "15" ]]; then
+        preset_name="Obsanity IPS"
+        echo ""
+        echo "${Y}[*] Applying ${B}$preset_name ${N}${Y}preset...${N}"
+        sleep 1.5
+        obsanity_ips
+        echo ""
+        echo "${G}[*] Done, ${B}$preset_name ${N}${Y}preset applied.${N}"
+        echo ""
+      elif [[ "$2" == "16" ]]; then
+        preset_name="Yoyoz808"
+        echo ""
+        echo "${Y}[*] Applying ${B}$preset_name ${N}${Y}preset...${N}"
+        sleep 1.5
+        yoyoz808
+        echo ""
+        echo "${G}[*] Done, ${B}$preset_name ${N}${Y}preset applied.${N}"
+        echo ""
+      elif [[ "$2" == "17" ]]; then
+        preset_name="Perfection"
+        echo ""
+        echo "${Y}[*] Applying ${B}$preset_name ${N}${Y}preset...${N}"
+        sleep 1.5
+        perfection
+        echo ""
+        echo "${G}[*] Done, ${B}$preset_name ${N}${Y}preset applied.${N}"
+        echo ""
+      elif [[ "$2" == "18" ]]; then
+        preset_name="Gerard Extreme Cool"
+        echo ""
+        echo "${Y}[*] Applying ${B}$preset_name ${N}${Y}preset...${N}"
+        sleep 1.5
+        gerard_extreme_cool
+        echo ""
+        echo "${G}[*] Done, ${B}$preset_name ${N}${Y}preset applied.${N}"
+        echo ""
+      else
+        echo ""
+        echo "${R}[!] Invalid option or null output.${N}"
+        echo ""
+      fi
+      exit
+      ;;
+    -tp|--test-preset)
+      if [[ "$2" == "1" ]]; then
+        preset_name="Vomer BrightBalance"
+        echo ""
+        echo "${Y}[*] Applying ${B}$preset_name ${N}${Y}preset...${N}"
+        sleep 1.5
+        vomer_brightbalance
+        echo ""
+        echo "${G}[*] Done, ${B}$preset_name ${N}${Y}preset applied.${N}"
+        echo "${G}[*] The preset will exit in ${B}$TIMEOUT${G} second(s)!!!"
+        echo "${G}[*] Opening a website to see the color changes...${N}"
+        openphoto
+        echo ""
+        timeout_func
+        restore_preset
+      elif [[ "$2" == "2" ]]; then
+        preset_name="Vomer IPS"
+        echo ""
+        echo "${Y}[*] Applying ${B}$preset_name ${N}${Y}preset...${N}"
+        sleep 1.5
+        vomer_ips
+        echo ""
+        echo "${G}[*] Done, ${B}$preset_name ${N}${Y}preset applied.${N}"
+        echo "${G}[*] The preset will exit in ${B}$TIMEOUT${G} second(s)!!!"
+        echo "${G}[*] Opening a website to see the color changes...${N}"
+        openphoto
+        echo ""
+        timeout_func
+        restore_preset
+      elif [[ "$2" == "3" ]]; then
+        preset_name="Vomer AccuRich"
+        echo ""
+        echo "${Y}[*] Applying ${B}$preset_name ${N}${Y}preset...${N}"
+        sleep 1.5
+        vomer_accurich
+        echo ""
+        echo "${G}[*] Done, ${B}$preset_name ${N}${Y}preset applied.${N}"
+        echo "${G}[*] The preset will exit in ${B}$TIMEOUT${G} second(s)!!!"
+        echo "${G}[*] Opening a website to see the color changes...${N}"
+        openphoto
+        echo ""
+        timeout_func
+        restore_preset
+      elif [[ "$2" == "4" ]]; then
+        preset_name="Vomer DeepRich"
+        echo ""
+        echo "${Y}[*] Applying ${B}$preset_name ${N}${Y}preset...${N}"
+        sleep 1.5
+        vomer_deeprich
+        echo ""
+        echo "${G}[*] Done, ${B}$preset_name ${N}${Y}preset applied.${N}"
+        echo "${G}[*] The preset will exit in ${B}$TIMEOUT${G} second(s)!!!"
+        echo "${G}[*] Opening a website to see the color changes...${N}"
+        openphoto
+        echo ""
+        timeout_func
+        restore_preset
+      elif [[ "$2" == "5" ]]; then
+        preset_name="WrinkleFree"
+        echo ""
+        echo "${Y}[*] Applying ${B}$preset_name ${N}${Y}preset...${N}"
+        sleep 1.5
+        wrinklefree
+        echo ""
+        echo "${G}[*] Done, ${B}$preset_name ${N}${Y}preset applied.${N}"
+        echo "${G}[*] The preset will exit in ${B}$TIMEOUT${G} second(s)!!!"
+        echo "${G}[*] Opening a website to see the color changes...${N}"
+        openphoto
+        echo ""
+        timeout_func
+        restore_preset
+      elif [[ "$2" == "6" ]]; then
+        preset_name="WrinkleFree Cool"
+        echo ""
+        echo "${Y}[*] Applying ${B}$preset_name ${N}${Y}preset...${N}"
+        sleep 1.5
+        wrinklefree_cool
+        echo ""
+        echo "${G}[*] Done, ${B}$preset_name ${N}${Y}preset applied.${N}"
+        echo "${G}[*] The preset will exit in ${B}$TIMEOUT${G} second(s)!!!"
+        echo "${G}[*] Opening a website to see the color changes...${N}"
+        openphoto
+        echo ""
+        timeout_func
+        restore_preset
+      elif [[ "$2" == "7" ]]; then
+        preset_name="Deep Black Colorful"
+        echo ""
+        echo "${Y}[*] Applying ${B}$preset_name ${N}${Y}preset...${N}"
+        sleep 1.5
+        deep_black_colorful
+        echo ""
+        echo "${G}[*] Done, ${B}$preset_name ${N}${Y}preset applied.${N}"
+        echo "${G}[*] The preset will exit in ${B}$TIMEOUT${G} second(s)!!!"
+        echo "${G}[*] Opening a website to see the color changes...${N}"
+        openphoto
+        echo ""
+        timeout_func
+        restore_preset
+      elif [[ "$2" == "8" ]]; then
+        preset_name="Sir Banger"
+        echo ""
+        echo "${Y}[*] Applying ${B}$preset_name ${N}${Y}preset...${N}"
+        sleep 1.5
+        sir_banger
+        echo ""
+        echo "${G}[*] Done, ${B}$preset_name ${N}${Y}preset applied.${N}"
+        echo "${G}[*] The preset will exit in ${B}$TIMEOUT${G} second(s)!!!"
+        echo "${G}[*] Opening a website to see the color changes...${N}"
+        openphoto
+        echo ""
+        timeout_func
+        restore_preset
+      elif [[ "$2" == "9" ]]; then
+        preset_name="Purian"
+        echo ""
+        echo "${Y}[*] Applying ${B}$preset_name ${N}${Y}preset...${N}"
+        sleep 1.5
+        purian
+        echo ""
+        echo "${G}[*] Done, ${B}$preset_name ${N}${Y}preset applied.${N}"
+        echo "${G}[*] The preset will exit in ${B}$TIMEOUT${G} second(s)!!!"
+        echo "${G}[*] Opening a website to see the color changes...${N}"
+        openphoto
+        echo ""
+        timeout_func
+        restore_preset
+      elif [[ "$2" == "10" ]]; then
+        preset_name="Franco"
+        echo ""
+        echo "${Y}[*] Applying ${B}$preset_name ${N}${Y}preset...${N}"
+        sleep 1.5
+        franco
+        echo ""
+        echo "${G}[*] Done, ${B}$preset_name ${N}${Y}preset applied.${N}"
+        echo "${G}[*] The preset will exit in ${B}$TIMEOUT${G} second(s)!!!"
+        echo "${G}[*] Opening a website to see the color changes...${N}"
+        openphoto
+        echo ""
+        timeout_func
+        restore_preset
+      elif [[ "$2" == "11" ]]; then
+        preset_name="Harley-Tech"
+        echo ""
+        echo "${Y}[*] Applying ${B}$preset_name ${N}${Y}preset...${N}"
+        sleep 1.5
+        harley_tech
+        echo ""
+        echo "${G}[*] Done, ${B}$preset_name ${N}${Y}preset applied.${N}"
+        echo "${G}[*] The preset will exit in ${B}$TIMEOUT${G} second(s)!!!"
+        echo "${G}[*] Opening a website to see the color changes...${N}"
+        openphoto
+        echo ""
+        timeout_func
+        restore_preset
+      elif [[ "$2" == "12" ]]; then
+        preset_name="Banged Up"
+        echo ""
+        echo "${Y}[*] Applying ${B}$preset_name ${N}${Y}preset...${N}"
+        sleep 1.5
+        banged_up
+        echo ""
+        echo "${G}[*] Done, ${B}$preset_name ${N}${Y}preset applied.${N}"
+        echo "${G}[*] The preset will exit in ${B}$TIMEOUT${G} second(s)!!!"
+        echo "${G}[*] Opening a website to see the color changes...${N}"
+        openphoto
+        echo ""
+        timeout_func
+        restore_preset
+      elif [[ "$2" == "13" ]]; then
+        preset_name="SimCooler"
+        echo ""
+        echo "${Y}[*] Applying ${B}$preset_name ${N}${Y}preset...${N}"
+        sleep 1.5
+        simcooler
+        echo ""
+        echo "${G}[*] Done, ${B}$preset_name ${N}${Y}preset applied.${N}"
+        echo "${G}[*] The preset will exit in ${B}$TIMEOUT${G} second(s)!!!"
+        echo "${G}[*] Opening a website to see the color changes...${N}"
+        openphoto
+        echo ""
+        timeout_func
+        restore_preset
+      elif [[ "$2" == "14" ]]; then
+        preset_name="Obsanity"
+        echo ""
+        echo "${Y}[*] Applying ${B}$preset_name ${N}${Y}preset...${N}"
+        sleep 1.5
+        obsanity
+        echo ""
+        echo "${G}[*] Done, ${B}$preset_name ${N}${Y}preset applied.${N}"
+        echo "${G}[*] The preset will exit in ${B}$TIMEOUT${G} second(s)!!!"
+        echo "${G}[*] Opening a website to see the color changes...${N}"
+        openphoto
+        echo ""
+        timeout_func
+        restore_preset
+      elif [[ "$2" == "15" ]]; then
+        preset_name="Obsanity IPS"
+        echo ""
+        echo "${Y}[*] Applying ${B}$preset_name ${N}${Y}preset...${N}"
+        sleep 1.5
+        obsanity_ips
+        echo ""
+        echo "${G}[*] Done, ${B}$preset_name ${N}${Y}preset applied.${N}"
+        echo "${G}[*] The preset will exit in ${B}$TIMEOUT${G} second(s)!!!"
+        echo "${G}[*] Opening a website to see the color changes...${N}"
+        openphoto
+        echo ""
+        timeout_func
+        restore_preset
+      elif [[ "$2" == "16" ]]; then
+        preset_name="Yoyoz808"
+        echo ""
+        echo "${Y}[*] Applying ${B}$preset_name ${N}${Y}preset...${N}"
+        sleep 1.5
+        yoyoz808
+        echo ""
+        echo "${G}[*] Done, ${B}$preset_name ${N}${Y}preset applied.${N}"
+        echo "${G}[*] The preset will exit in ${B}$TIMEOUT${G} second(s)!!!"
+        echo "${G}[*] Opening a website to see the color changes...${N}"
+        openphoto
+        echo ""
+        timeout_func
+        restore_preset
+      elif [[ "$2" == "17" ]]; then
+        preset_name="Perfection"
+        echo ""
+        echo "${Y}[*] Applying ${B}$preset_name ${N}${Y}preset...${N}"
+        sleep 1.5
+        perfection
+        echo ""
+        echo "${G}[*] Done, ${B}$preset_name ${N}${Y}preset applied.${N}"
+        echo "${G}[*] The preset will exit in ${B}$TIMEOUT${G} second(s)!!!"
+        echo "${G}[*] Opening a website to see the color changes...${N}"
+        openphoto
+        echo ""
+        timeout_func
+        restore_preset
+      elif [[ "$2" == "18" ]]; then
+        preset_name="Gerard Extreme Cool"
+        echo ""
+        echo "${Y}[*] Applying ${B}$preset_name ${N}${Y}preset...${N}"
+        sleep 1.5
+        gerard_extreme_cool
+        echo ""
+        echo "${G}[*] Done, ${B}$preset_name ${N}${Y}preset applied.${N}"
+        echo "${G}[*] The preset will exit in ${B}$TIMEOUT${G} second(s)!!!"
+        echo "${G}[*] Opening a website to see the color changes...${N}"
+        openphoto
+        echo ""
+        timeout_func
+        restore_preset
+      else
+        echo ""
+        echo "${R}[!] Invalid option or null output.${N}"
+        echo ""
+      fi
+      exit
+      ;;
+    -tt|--test-timeout)
+      if [[ ! -z "$2" ]]; then
+        echo ""
+        echo "${Y}[*] The timeout is ${B}$2 ${Y}seconds, are you sure about that?"
+        echo ""
+        echo "${Y}[1] - ${B}Yes"
+        echo "${Y}[2] - ${B}No"
+        echo ""
+        echo "${C}Your answer:${N} \c"
+        read answer
+        echo ""
+        if [[ "$answer" == "1" ]]; then
+          echo "${Y}[*] Right, setting the timeout to ${B}$2 ${Y}seconds.${N}"
+          sed -i "s/TIMEOUT=.*/TIMEOUT=$2/g" "$MODDIR/mod-util.sh"
+          sleep 1
+          echo "${G}[*] Done.${N}"
+          echo ""
+        elif [[ "$answer" == "2" ]]; then
+          echo "${Y}[*] Okay, exiting...${N}"
+          echo ""
+          sleep 1
+          exit 0
+        else
+          echo ""
+          echo "${R}[!] Invalid option or null output.${N}"
+          echo ""
+          exit 0
+        fi
+      elif [[ -z "$2" ]]; then
+        echo ""
+        echo "${R}[!] Input cannot be empty.${N}"
+        echo ""
+      fi
+      exit
+      ;;
+    -l|--list)
+      kcallist
+      exit
+      ;;
+    -b|--backup)
+      echo ""
+      echo "${Y}[*] Making a new backup will overwrite the current configuration backup, are you sure about that?"
+      echo ""
+      echo "${Y}[1] - ${B}Yes"
+      echo "${Y}[2] - ${B}No"
+      echo ""
+      echo "${C}Your answer:${N} \c"
+      read answer
+      echo ""
+      if [[ "$answer" == "1" ]]; then
+        echo "${G}[*] Starting backup of kcal settings...${N}"
+        backup_preset
+        echo "${G}[*] Done, backup created!${N}"
+        echo ""
+        exit 0
+      elif [[ "$answer" == "2" ]]; then
+        echo "${Y}[*] Okay, exiting...${N}"
+        echo ""
+        sleep 1
+        exit 0
+      else
+        echo ""
+        echo "${R}[!] Invalid option or null output.${N}"
+        echo ""
+        exit 1
+      fi
+      exit
+      ;;
+    -r|--restore)
+      if [[ ! -d /data/local/temp_kcal_backup ]]; then
+        echo ""
+        echo "${R}[!] It looks like you don't have any backups, make one before trying this option.${N}"
+        echo ""
+        exit 1
+      fi
+      
+      echo ""
+      echo "${Y}[*] Restoring the backup will cause you to lose your current settings.${N}"
+      echo "${Y}[*] You are about to restore the previously made backup, are you sure about that?"
+      echo ""
+      echo "${Y}[1] - ${B}Yes"
+      echo "${Y}[2] - ${B}No"
+      echo ""
+      echo "${C}Your answer:${N} \c"
+      read answer
+      echo ""
+      if [[ "$answer" == "1" ]]; then
+        echo "${G}[*] Restoring previously made kcal backup...${N}"
+        restore_temp_preset
+        echo ""
+        echo "${G}[*] Done!${N}"
+        echo ""
+        exit 0
+      elif [[ "$answer" == "2" ]]; then
+        echo "${Y}[*] Okay, exiting...${N}"
+        echo ""
+        sleep 1
+        exit 0
+      else
+        echo ""
+        echo "${R}[!] Invalid option or null output.${N}"
+        echo ""
+        exit 1
+      fi
+      exit
+      ;;
+    -d|--default)
+      echo ""
+      echo "${Y}[*] If you restore to default, your current setup will be overwritten, are you sure about that?"
+      echo ""
+      echo "${Y}[1] - ${B}Yes"
+      echo "${Y}[2] - ${B}No"
+      echo ""
+      echo "${C}Your answer:${N} \c"
+      read answer
+      echo ""
+      if [[ "$answer" == "1" ]]; then
+        echo "${G}[*] Restoring kcal setting to default...${N}"
+        restore_preset
+        echo ""
+        echo "${G}[*] Done!${N}"
+        echo ""
+        exit 0
+      elif [[ "$answer" == "2" ]]; then
+        echo "${Y}[*] Okay, exiting...${N}"
+        echo ""
+        sleep 1
+        exit 0
+      else
+        echo ""
+        echo "${R}[!] Invalid option or null output.${N}"
+        echo ""
+        exit 1
+      fi
+      exit
+      ;;
+    -c|--custom)
+      custom_config
+      exit
+      ;;
+    -h|--help)
+      help_text
+      exit 0
+      ;;
+    *)
+      echo ""
+      echo "${R}[!] Unknown option: ${B}$key${N}"
+      sleep 3
+      printf "\033c"
+      help_text
+      exit 0
+      ;;
+  esac
+done
