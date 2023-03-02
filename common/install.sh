@@ -79,7 +79,7 @@ backup_preset
 
 # Download essential files for the module to work
 ui_print "[*] - Downloading the latest script(s) from GitHub..."
-wget -O "${modpath}system/bin/ikcal" "https://raw.githubusercontent.com/raidenkkj/iKCAL/stable/system/bin/ikcal"
+wget -O "${modpath}system/bin/ikcal" "https://raw.githubusercontent.com/raidenkkj/iKCAL/main/system/bin/ikcal"
 wget -O "${modpath}mod-util.sh" "https://raw.githubusercontent.com/raidenkkj/iKCAL/main/mod-util.sh"
 
 # Finished installation

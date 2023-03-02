@@ -48,7 +48,7 @@ echo "${default}${bold}Zipping ${blink}$iname-$cdnm-$day$month$year$hour$minute.
 echo ""
 
 
-zip -0 -r9 -ll "$iname-$cdnm-$day$month$year$hour$minute.zip" . -x 'ikcal' -x '*.bak*' -x '*.git*' -x '*mod-util.sh*' -x '*changelog.md*' -x '*images*' -x '*build.sh*' -x '*placeholder*'
+zip -0 -r9 -ll "$iname-$cdnm-$day$month$year$hour$minute.zip" . -x 'system/bin/ikcal' -x '*.bak*' -x '*.git*' -x '*mod-util.sh*' -x '*changelog.md*' -x '*images*' -x '*build.sh*' -x '*placeholder*'
 
 if [[ -d "$outdir" ]]; then
 	mv -f "$iname-$cdnm-$day$month$year$hour$minute.zip" $outdir
