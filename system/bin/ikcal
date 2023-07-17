@@ -38,6 +38,9 @@ MODDIR="$MOUNTPATH/$ID"
 # Load mod-util.sh
 . "$MODDIR"/mod-util.sh || exit $?
 
+# Valid options 
+valid_options=("--set" "-s" "--test-preset" "-tp" "--test-timeout" "-tt" "--list" "-l" "--backup" "-b" "--restore" "-r" "--default" "-d" "--custom" "-c" "--help" "-h")
+
 # Test if input is empty
 if [ $# -eq 0 ]; then
   help_text
@@ -627,12 +630,35 @@ while [[ $# -gt 0 ]]; do
       exit 0
       ;;
     *)
-      echo ""
-      echo "${R}[!] Unknown option: ${B}$key${N}"
-      sleep 3
-      printf "\033c"
-      help_text
-      exit 0
+      if [[ " ${valid_options[*]} " == *" $key "* ]]; then
+        true
+      else
+        suggestions=()
+        for argument in "${valid_options[@]}"; do
+          if echo "$argument" | grep -q "^${key:0:3}"; then
+            suggestions+=("$argument")
+          fi
+        done
+
+        if [ ${#suggestions[@]} -gt 0 ]; then
+          echo ""
+          echo "${R}[!] Unknown option: ${B}$key${N}"
+          echo ""
+          echo "${Y}Did you mean: ${N}"
+          for suggestion in "${suggestions[@]}"; do
+            echo "- ${B}ikcal ${G}$suggestion${N}"
+          done
+          echo ""
+          exit 1
+        else
+          echo ""
+          echo "${R}[!] Unknown option: ${B}$key${N}"
+          echo ""
+          echo "${G}[*] Try typing 'ikcal --help'${N}"
+          echo ""
+          exit 1
+        fi
+      fi
       ;;
   esac
 done
