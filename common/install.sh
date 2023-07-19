@@ -32,27 +32,19 @@ backup_preset() {
   dst_dir="/data/local/perm_kcal_backup"
 
   # Create the destination directory if it doesn't exist
-  if [[ ! -d "$dst_dir" ]]; then
-    mkdir -p "$dst_dir"
+  [[ ! -d "$dst_dir" ]] && mkdir -p "$dst_dir"
+
+  # Define the directories to be copied based on ALT_KCAL_DIR value
+  if [[ "$ALT_KCAL_DIR" == "0" ]]; then
+    preset_dirs="kcal kcal_min kcal_sat kcal_hue kcal_val kcal_cont"
+  elif [[ "$ALT_KCAL_DIR" == "1" ]]; then
+    preset_dirs="kcal_red kcal_green kcal_blue kcal_sat kcal_hue kcal_val kcal_cont"
   fi
 
-  # Copy the files from the source to the destination directory
-  if [[ "$KCAL_TDIR" == "0" ]]; then
-    cp -r "$src_dir"/kcal "$dst_dir"
-    cp -r "$src_dir"/kcal_min "$dst_dir"
-    cp -r "$src_dir"/kcal_sat "$dst_dir"
-    cp -r "$src_dir"/kcal_hue "$dst_dir"
-    cp -r "$src_dir"/kcal_val "$dst_dir"
-    cp -r "$src_dir"/kcal_cont "$dst_dir"
-  elif [[ "$KCAL_TDIR" == "1" ]]; then
-    cp -r "$src_dir"/kcal_red "$dst_dir"
-    cp -r "$src_dir"/kcal_green "$dst_dir"
-    cp -r "$src_dir"/kcal_blue "$dst_dir"
-    cp -r "$src_dir"/kcal_sat "$dst_dir"
-    cp -r "$src_dir"/kcal_hue "$dst_dir"
-    cp -r "$src_dir"/kcal_val "$dst_dir"
-    cp -r "$src_dir"/kcal_cont "$dst_dir"
-  fi
+  # Copy the relevant directories
+  for dir in $preset_dirs; do
+    cp -r "$src_dir/$dir" "$dst_dir"
+  done
 
   # Message that signals the end of the backup
   sleep 1.5
