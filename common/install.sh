@@ -2,20 +2,22 @@
 # iKCAL™ by Raiden Ishigami (raidenkkj @ GitHub).
 # If you use parts of this project, please credit the respective authors.
 
-# KCAL working directory
-# Check if the kcal directory exists on the default path
+# KCAL - Working Directory
+# Check if the KCAL directory exists on the default path
 if [[ -d "/sys/devices/platform/kcal_ctrl.0" ]]; then
-    KCAL_DIR="/sys/devices/platform/kcal_ctrl.0"
-    KCAL_TDIR="0"
-# Check if the kcal directory exists on the alternate path
+  KCAL_DIR="/sys/devices/platform/kcal_ctrl.0"
+  ALT_KCAL_DIR="0"
+
+# Check if the KCAL directory exists on the alternate path
 elif [[ -d "/sys/module/msm_drm/parameters" ]]; then
-    KCAL_DIR="/sys/module/msm_drm/parameters"
-    KCAL_TDIR="1"
-else
-    true
+  KCAL_DIR="/sys/module/msm_drm/parameters"
+  if [[ -f "$KCAL_DIR/kcal_red" ]] || [[ -f "$KCAL_DIR/kcal_green" ]] || [[ -f "$KCAL_DIR/kcal_blue" ]]; then
+    KCAL_FILE="1"
+  fi
+    ALT_KCAL_DIR="1"
 fi
 
-# Variable to know if kcal is active or deactivated
+# Variable to know if KCAL is active or deactivated
 if [[ "$KCAL_TDIR" == "0" ]]; then
   KCALSTATUS="$(cat $KCAL_DIR/kcal_enable)"
 fi
@@ -23,7 +25,7 @@ fi
 # Modpath
 modpath="/data/adb/modules_update/iKCAL/"
 
-# Function to store current kcal data
+# Function to store current KCAL settings
 backup_preset() {
   # Source and destination directories
   src_dir="$KCAL_DIR"
@@ -68,17 +70,26 @@ ui_print ""
 ui_print "CODENAME: $(grep_prop codename "${modpath}module.prop")"
 sleep 0.5
 ui_print ""
-ui_print "With this module you can choose handpicked kcal presets."
+ui_print "With this module you can choose handpicked KCAL presets."
 sleep 1
 ui_print ""
 ui_print "[*] - Checking if your kernel supports KCAL..."
 sleep 1.5
 ui_print ""
 
-# Check if kcal is supported
+# Check if KCAL is supported
 if [[ -d "$KCAL_DIR" ]]; then
-  ui_print "[*] - Your kernel supports KCAL, proceeding with installation..."
-  sleep 1.5
+  if [[ "$ALT_KCAL_DIR" == "0" ]]; then
+    ui_print "[*] - Your kernel supports KCAL, proceeding with installation..."
+    sleep 1.5
+  elif [[ "$ALT_KCAL_DIR" == "1" && -n "$KCAL_FILE" ]]; then
+    ui_print "[*] - Your kernel supports KCAL, proceeding with installation..."
+    sleep 1.5
+  else
+    ui_print "[*] - Your kernel supports KCAL, but the KCAL files are missing. Terminating installation..."
+    sleep 1.5
+    exit 1
+  fi
 elif [[ ! -d "$KCAL_DIR" ]]; then
   ui_print "[*] - Your kernel unfortunately does not support KCAL, terminating installation..."
   sleep 1.5
@@ -89,14 +100,14 @@ else
   exit 1
 fi
 
-# Check if kcal is disabled and enable it
+# Check if KCAL is disabled and enable it
 if [[ "$KCALSTATUS" == "1" ]]; then
   echo '0' > $KCAL_DIR/kcal_enable
 fi
 
-# Kcal data backup
+# KCAL settings backup
 ui_print ""
-ui_print "[*] - Creating backup of kcal settings..."
+ui_print "[*] - Creating backup of KCAL settings..."
 backup_preset
 
 # Download essential files for the module to work
