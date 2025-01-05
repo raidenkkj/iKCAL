@@ -3,20 +3,20 @@
 # If you use parts of this project, please credit the respective authors.
 
 # KCAL working directory
-# Check if the kcal directory exists on the default path
-if [[ -d "/sys/devices/platform/kcal_ctrl.0" ]]; then
+# Check if the kcal directory exists and verify if required files are present
+if [[ -d "/sys/devices/platform/kcal_ctrl.0" ]] && [[ -f "/sys/devices/platform/kcal_ctrl.0/kcal" ]]; then
     KCAL_DIR="/sys/devices/platform/kcal_ctrl.0"
     KCAL_TDIR="0"
-# Check if the kcal directory exists on the alternate path
-elif [[ -d "/sys/module/msm_drm/parameters" ]]; then
+elif [[ -d "/sys/module/msm_drm/parameters" ]] && [[ -f "/sys/module/msm_drm/parameters/kcal_red" ]]; then
     KCAL_DIR="/sys/module/msm_drm/parameters"
     KCAL_TDIR="1"
 else
-    true
+    KCAL_DIR=""
+    KCAL_TDIR=""
 fi
 
 # Variable to know if kcal is active or deactivated
-if [[ "$KCAL_TDIR" == "0" ]]; then
+if [[ "$KCAL_TDIR" == "0" ]] && [[ -f "$KCAL_DIR/kcal_enable" ]]; then
   KCALSTATUS="$(cat $KCAL_DIR/kcal_enable)"
 fi
 
@@ -76,15 +76,11 @@ sleep 1.5
 ui_print ""
 
 # Check if kcal is supported
-if [[ -d "$KCAL_DIR" ]]; then
+if [[ -n "$KCAL_DIR" ]]; then
   ui_print "[*] - Your kernel supports KCAL, proceeding with installation..."
   sleep 1.5
-elif [[ ! -d "$KCAL_DIR" ]]; then
-  ui_print "[*] - Your kernel unfortunately does not support KCAL, terminating installation..."
-  sleep 1.5
-  exit 1
 else
-  ui_print "[*] - KCAL support status is unknown, terminating installation..."
+  ui_print "[*] - Your kernel unfortunately does not support KCAL, terminating installation..."
   sleep 1.5
   exit 1
 fi
